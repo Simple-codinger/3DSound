@@ -1,7 +1,6 @@
 #include "wavContainer.h"
 
-WavContainer WavContainer::parse(std::string& fileName) {
-    WavContainer container;
+void WavContainer::parse(std::string& fileName) {
     std::ifstream wavFile (fileName, std::ios::in | std::ios::binary);
 
     WavHeader header;
@@ -13,11 +12,12 @@ WavContainer WavContainer::parse(std::string& fileName) {
         throw WavParserException();
     }
 
-    container.setHeader(header);
+    this->_header = header;
     
     // read samples
     unsigned short bytesPerSample = header.BitsPerSample / 8;
-    container.setAmountSamples(header.Subchunk2Size / bytesPerSample); //How many samples are in the wav file?
+    this->amountSamples = header.Subchunk2Size / bytesPerSample; //How many samples are in the wav file?
 
-    return container;
+
+
 }

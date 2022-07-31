@@ -30,12 +30,14 @@ typedef struct  WavHeader
 class WavContainer{
     private:
         WavHeader _header;
-        unsigned int _amountSamples;
     public:
-        inline void setHeader(WavHeader header) {this->_header = header;};
-        inline void setAmountSamples(unsigned int amountSamples) {this->_amountSamples = amountSamples;};
+        unsigned int amountSamples;
 
-        static WavContainer parse(std::string& fileName);
-        static WavContainer parse(char* stream);
+        WavContainer(){};
+        WavContainer(std::string& fileName) {this->parse(fileName);};
+        WavContainer(char* stream) {this->parse(stream);};
+
+        void parse(std::string& fileName);
+        void parse(char* stream);
 };
 #endif
