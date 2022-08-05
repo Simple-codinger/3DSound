@@ -4,7 +4,7 @@
 #include <ios>
 #include <exception>
 
-#include "wavContainer.h"
+#include "wav/wavContainer.h"
 
 int main(int ac, char** av) {
     std::string fileName = "dosed.wav";
@@ -13,7 +13,7 @@ int main(int ac, char** av) {
     }
 
     try {
-        WavContainer::parse(fileName);
+        wav::WavContainer wavContainer(fileName);
     } catch (exception& e) {
         std::cout << e.what() << std::endl;
     }
