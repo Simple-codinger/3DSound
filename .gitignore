@@ -1,3 +1,6 @@
 *.wav
 /.vscode
 *.out
+
+/bin
+/build
