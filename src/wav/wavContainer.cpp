@@ -85,13 +85,13 @@ void WavContainer::parse(std::string& fileName) {
     uint16_t bps = this->GetBitsPerSample();
     uint32_t numOfSamples = this->GetNumberOfSamples();
 
-    this->samples = new int32_t[numOfSamples];
+    this->samples = new float[numOfSamples];
 
     for (int i = 0; i < numOfSamples; ++i) {
         if (bps == 16) {
-            *(this->samples + i) = ByteArrayToUInt16LE(soundData + (i*2));
+            *(this->samples + i) = (float)(ByteArrayToUInt16LE(soundData + (i*2))/MAX_AMPLITUDE_16);
         } else if (bps == 32) {
-            *(this->samples + i) = ByteArrayToInt32LE(soundData + (i*4));
+            *(this->samples + i) = (float)(ByteArrayToInt32LE(soundData + (i*4))/MAX_AMPLITUDE_32);
         }
     }
 

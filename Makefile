@@ -4,14 +4,15 @@ CC := g++ # This is the main compiler
 SRCDIR := src
 BUILDDIR := build
 BINDIR := bin
+LIBDIR := lib
 TARGET := bin/3DSound
  
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CFLAGS := -g -std=c++17 -O3 -Wall
-LIB := 
-INC := -I include  
+CFLAGS := -g -std=c++17 -O0 -Wall
+LIB := -lrt -lasound -ljack -lpthread -lportaudio -lpython2.7 
+INC := -I include -I/usr/include/python2.7 -DWITHOUT_NUMPY
 
 
 
