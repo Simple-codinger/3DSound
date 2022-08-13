@@ -13,9 +13,12 @@ namespace sound {
         unsigned int amountSamples;
         uint8_t bytesPerSample;
         uint32_t sampleRate;
-        float* samples; 
+
+        float* leftChannelSamples;
+        float* rightChannelSamples; 
 
         void plotSignal() {
+            /*
             std::cout << "Amount Samples: " << amountSamples << std::endl;
             unsigned int amountPerChannel = amountSamples/2;
             std::cout << "Amount per Channel: " << amountPerChannel << std::endl;
@@ -57,6 +60,7 @@ namespace sound {
             delete yLeft;
             delete xRight;
             delete yRight;
+            */
         }
     };
 }

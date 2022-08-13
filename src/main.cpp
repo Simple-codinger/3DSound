@@ -9,11 +9,9 @@
 #include "wav/wavContainer.h"
 #include "../lib/matplotlibcpp.h"
 
-#include <math.h>
-
 namespace plt = matplotlibcpp;
 
-#define FRAMES_PER_BUFFER  (64)
+#define FRAMES_PER_BUFFER (64)
 
 int sampleIndex = 0;
 sound::SoundContainer soundContainer;
@@ -33,15 +31,15 @@ static int paTestCallback( const void *inputBuffer, void *outputBuffer,
     float *out = (float*)outputBuffer;
     (void) inputBuffer; /* Prevent unused variable warning. */
 
-    int framesLeft = ((data->amountSamples)/2) - sampleIndex;
+    int framesLeft = ((data->amountSamples/2)) - sampleIndex;
 
-    if (framesLeft <= framesPerBuffer)
+    if (framesLeft <= framesPerBuffer*2)
         finished = paComplete;
 
     for(unsigned long i=0; i<framesPerBuffer; i++ )
     {
-        *out++ = data->samples[sampleIndex];  /* left */
-        *out++ = data->samples[sampleIndex++];  /* right */
+        *out++ = data->leftChannelSamples[sampleIndex];  /* left */
+        *out++ = data->rightChannelSamples[sampleIndex++];  /* right */
     }
     return finished;
 }
@@ -91,7 +89,8 @@ int main(int ac, char** av) {
             &stream,
             nullptr,
             &outputParameters,
-            soundContainer.sampleRate*outputParameters.channelCount,
+            //soundContainer.sampleRate*outputParameters.channelCount,
+            soundContainer.sampleRate,
             FRAMES_PER_BUFFER,
             paClipOff,
             paTestCallback,

@@ -22,7 +22,6 @@ void WavContainer::_parseHeader(std::ifstream& wavFile) {
         chunkIdVal = ByteArrayToInt32BE(chunkId);
         uint32_t dataSize;
         uint8_t* listData = nullptr;
-        std::cout << "Read Header: " << chunkId << std::endl;
         switch (chunkIdVal)
         {  
             case FMT:
@@ -85,13 +84,20 @@ void WavContainer::parse(std::string& fileName) {
     uint16_t bps = this->GetBitsPerSample();
     uint32_t numOfSamples = this->GetNumberOfSamples();
 
-    this->samples = new float[numOfSamples];
+    this->leftChannelSamples = new float[numOfSamples/2];
+    this->rightChannelSamples = new float[numOfSamples/2];
 
-    for (int i = 0; i < numOfSamples; ++i) {
+    for (uint32_t i = 0; i < numOfSamples; ++i) {
         if (bps == 16) {
-            *(this->samples + i) = (float)(ByteArrayToUInt16LE(soundData + (i*2))/MAX_AMPLITUDE_16);
+            if (i%2 == 0)
+                *(this->leftChannelSamples + i/2) = (float)(ByteArrayToUInt16LE(soundData + (i*2))/MAX_AMPLITUDE_16);
+            else 
+                *(this->rightChannelSamples + i/2) = (float)(ByteArrayToUInt16LE(soundData + (i*2))/MAX_AMPLITUDE_16);
         } else if (bps == 32) {
-            *(this->samples + i) = (float)(ByteArrayToInt32LE(soundData + (i*4))/MAX_AMPLITUDE_32);
+            if (i%2 == 0)
+                *(this->leftChannelSamples + i/2) = (float)(ByteArrayToInt32LE(soundData + (i*4))/MAX_AMPLITUDE_32);
+            else 
+                *(this->rightChannelSamples + i/2) = (float)(ByteArrayToInt32LE(soundData + (i*4))/MAX_AMPLITUDE_32);
         }
     }
 
@@ -101,7 +107,8 @@ void WavContainer::parse(std::string& fileName) {
 
 WavContainer::WavContainer(std::string& fileName) {
     this->_header = CreateWavHeader();
-    this->samples = nullptr;
+    this->leftChannelSamples = nullptr;
+    this->rightChannelSamples = nullptr;
     this->parse(fileName);
 }
 
@@ -111,6 +118,8 @@ WavContainer::WavContainer(char* stream) {
 }
 
 WavContainer::~WavContainer() {
-    delete[] this->samples;
+    delete[] this->leftChannelSamples;
+    delete[] this->rightChannelSamples;
+
     delete[] this->_header.format.data;
 }

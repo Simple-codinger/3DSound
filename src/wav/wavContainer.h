@@ -20,7 +20,8 @@ namespace wav {
         public:
             unsigned int amountSamples;
             uint8_t bytesPerSample;
-            float* samples; 
+            float* leftChannelSamples; 
+            float* rightChannelSamples;
             
             
             WavContainer(){};
@@ -36,7 +37,9 @@ namespace wav {
                 sound.amountSamples = this->GetNumberOfSamples();
                 sound.bytesPerSample = this->GetBitsPerSample()/8;
                 sound.sampleRate = this->GetSampleRate();
-                sound.samples = this->samples;
+
+                sound.leftChannelSamples = this->leftChannelSamples;
+                sound.rightChannelSamples = this->rightChannelSamples;
 
                 return sound;
             }
