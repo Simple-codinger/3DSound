@@ -15,30 +15,27 @@ namespace sound {
         uint32_t sampleRate;
 
         float* leftChannelSamples;
-        float* rightChannelSamples; 
+        float* rightChannelSamples;
+
+        ~SoundContainer() {
+            delete[] leftChannelSamples;
+            delete[] rightChannelSamples;
+        }; 
 
         void plotSignal() {
-            /*
+            
             std::cout << "Amount Samples: " << amountSamples << std::endl;
             unsigned int amountPerChannel = amountSamples/2;
             std::cout << "Amount per Channel: " << amountPerChannel << std::endl;
             
             std::vector<double>* xLeft = new std::vector<double>(amountPerChannel);
-            std::vector<float>* yLeft = new std::vector<float>(amountPerChannel);
+            std::vector<float>* yLeft = new std::vector<float>(leftChannelSamples, leftChannelSamples + amountPerChannel);
 
             std::vector<double>* xRight = new std::vector<double>(amountPerChannel);
-            std::vector<float>* yRight = new std::vector<float>(amountPerChannel);
-            
-            (*xLeft).reserve(amountPerChannel);
-            (*xRight).reserve(amountPerChannel);
-            (*yLeft).reserve(amountPerChannel);
-            (*yRight).reserve(amountPerChannel);
+            std::vector<float>* yRight = new std::vector<float>(rightChannelSamples, rightChannelSamples + amountPerChannel);
             
             for (unsigned int i = 0; i < amountPerChannel; ++i) {
-                (*yLeft)[i] = *(samples++);
-                (*yRight)[i] = *(samples++);
-
-                double time = i/sampleRate;
+                double time = ((double)i)/((double)sampleRate);
                 (*xLeft)[i] = time;
                 (*xRight)[i] = time;
             }
@@ -60,7 +57,6 @@ namespace sound {
             delete yLeft;
             delete xRight;
             delete yRight;
-            */
         }
     };
 }
