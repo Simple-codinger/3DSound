@@ -1,5 +1,5 @@
 #ifndef AUDIOPLAYER_H
-#define AUIDOPLAYER_H
+#define AUDIOPLAYER_H
 
 #include "./soundContainer.h"
 #include "portaudio.h"
@@ -8,14 +8,22 @@
 namespace sound {
     class AudioPlayer {
         private:
-            unsigned int _sampleIndex;
-            int _audioCallback( const void *inputBuffer, void *outputBuffer,
+            PaError _paMain;
+            PaStreamParameters _outputParameters;
+            unsigned int _framesPerBuffer;
+            void _configureStream();
+            static int _audioCallback(const void *inputBuffer, void *outputBuffer,
                            unsigned long framesPerBuffer,
                            const PaStreamCallbackTimeInfo* timeInfo,
                            PaStreamCallbackFlags statusFlags,
-                           void *userData );
+                           void *userData);
+            static void _streamFinished(void* userData) {};
+            struct SignalData{
+                sound::SoundContainer* soundContainer;
+                unsigned int sampleIndex;
+            };
         public:
-            AudioPlayer(): _sampleIndex(0){};
+            AudioPlayer();
             void play(sound::SoundContainer& sc);
     };
 }

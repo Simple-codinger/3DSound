@@ -1,3 +1,6 @@
+#ifndef CUSTOM_EXCEPTION_H
+#define  CUSTOM_EXCEPTION_H  
+
 // using standard exceptions
 #include <exception>
 using namespace std;
@@ -17,3 +20,4 @@ class PortAudioException: public exception {
     return msg;
   }
 };
+#endif
